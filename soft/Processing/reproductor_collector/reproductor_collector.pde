@@ -1,16 +1,23 @@
-
-
-
-//=======================================================================
+BufferedReader reader;
 class tPoint
 {
-  int x,y,dTime;
-  tPoint(int x1,int y1,int dTime1)
+//================================Constructors================================
+  public tPoint(int x1,int y1,int dTime1)
   {
     x=x1;
     y=y1;
     dTime=dTime1;
   }
+  public tPoint(String str)
+  {
+  }
+//================================Methods================================
+  public String toString()
+  {
+    return "(" + nf(x,1) + ";" + nf(y,1) + ";" + nf(dTime,1) + ")";
+  }
+//================================Fields================================
+  public int id,x,y,dTime;
 }
 
 ArrayList<tPoint> tPoints;
@@ -20,6 +27,7 @@ int starttime,drawStartTime;
 int startdraw=0;
 int drawcount=0;
 int warehousecount=0;
+database db;
 
 //=======================================================================
 void setup()
@@ -27,6 +35,24 @@ void setup()
   size(600, 600);
   tPoints = new ArrayList<tPoint>();
   warehouse = new ArrayList<ArrayList<tPoint>>();
+  String password;
+  try
+  {
+    reader = createReader("password.txt");
+    password = reader.readLine();
+  }
+  catch (Exception e)
+  {
+    password = "";
+  }
+  if(password != "")
+  {  
+    db = new database(this, "db4free.net", "rysownik", "rysownik", password);
+  }
+  else
+  {
+    db = new database();
+  }
   background(0);
   stroke(255);
 }
@@ -96,6 +122,18 @@ void keyPressed()
     warehousecount=0;
     drawcount=0;
   }
+  if (key == 's') // save to database
+  {
+    if (tPoints.size()>0)
+    {
+      db.addTPoints(tPoints);
+    }
+  }
+  if (key == 'c') //clear database
+  {
+    db.clearDatabase();
+  }
+
 }
 
 
