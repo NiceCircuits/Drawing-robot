@@ -16,16 +16,6 @@ int debug_atheta, debug_abeta, debug_pen=0;
 int px=0, py=0;
 PGraphics drawLayer;
 
-import processing.serial.*;
-Serial myPort;
-
-public static final char HEADER = '|'; 
-public static final char MOUSE = 'M';
-public static final char MOUSEUP = 'U';
-public static final char MOUSEDOWN = 'D';
-public static final char DEBUG = 'N';
-public static final char MEMORY_DATA = 'A';
-
 boolean premouse = false;
 boolean  correct_of_workspace = false;
 
@@ -169,129 +159,9 @@ void updateDrawLayer() {
   }
 }
 
-//---------------------------------------------------------------------------------- computations
-//---------------------------------------------------------------------------------- computations
-//---------------------------------------------------------------------------------- computations
 
-void inverseKinematics(float x, float y) {
-  /*
- take x and y in sx-sy centered coordinate
-   and set global vars:
-   - ex, ey : first joing
-   - hx, hy : second joint
-   - atheta, btheta
-   */
 
-  doInverseKinematicsTrigonometry(x, y);
-  computeArms();
-  getDataToSend();
-}
 
-void doInverseKinematicsTrigonometry(float x, float y) {
-  // http://www.openprocessing.org/visuals/?visualID=553
-
-  float D, E, B, C;
-
-  float dx = x;
-  float dy = y;
-  float distance = sqrt(dx*dx+dy*dy);
-
-  float c = min(distance, a + b);
-
-  B = acos((b*b-a*a-c*c)/(-2*a*c));
-  C = acos((c*c-a*a-b*b)/(-2*a*b));
-
-  D = atan2(dy, dx);
-  E = D + B + PI + C;
-
-  // hei, trigonometria, che cosa vuoi dirmi?
-
-  theta = E;
-  beta = D+B;
-
-  //  // http://www.alvarolopes.com/resources/USB_WIREDino-arm-inverse-kinematics.png
-  //  float d, beta, sigma, mu, fi;
-  //  y *= -1;
-  //
-  //  println("x " + x);
-  //  println("y " + y);
-  //  d = sqrt(x*x + y*y);
-  //
-  //  beta = acos((a*a + b*b - d*d)/(2*a*b));
-  //  println("beta "+beta);
-  //
-  //  sigma = acos((a*a + d*d -b*b)/(2*d*a));
-  //  println("sigma "+sigma);
-  //
-  //  mu = acos((d*d + y*y - x*x)/(2*d*y));
-  //  println("mu "+mu);
-  //
-  //  fi = (PI/2) - mu - sigma;
-  //  println("fi "+fi);
-  //
-  //  this.theta = fi;
-  //  this.beta = beta;
-}
-
-void computeArms() {
-  ex = cos(theta)*a + sx;
-  ey = sin(theta)*a + sy;
-
-  hx = cos(beta)*b + ex; // ? perchè funziona sta cosa?
-  hy = sin(beta)*b + ey;
-}
-
-//---------------------------------------------------------------------------------- arduino
-//---------------------------------------------------------------------------------- arduino
-//---------------------------------------------------------------------------------- arduino
-
-void serialEvent(Serial p) { 
-  // handle incoming serial data 
-  String inString = myPort.readStringUntil('\n');
-  if (inString != null) {
-    print("ARDUINO ECHO ### ");
-    println( inString );    // echo text string from arduino
-  }
-}
-
-void sendMessage(char tag, int atheta, int abeta) {
-  //println("send message "+atheta+" "+abeta);
-  if (!correct_of_workspace) {
-    println("OUT OF AVAIABLE WORKSPACE");
-    return;
-  }
-
-  try {
-    myPort.write(HEADER); 
-    myPort.write(tag);
-    myPort.write(180 - atheta); 
-    myPort.write(180 - abeta);
-  } catch(Exception e) {
-    //println("###USB not wired");
-  }
-
-  if (outputFile != null) {
-    num_written_message += 3;
-    outputFile.print(",'"+tag +"',"+ int(atheta) + "," + int(abeta));
-  }
-}
-
-void getDataToSend() {
-  atheta = (int)processing2costantinoTHETA(this.theta);
-
-  PVector v1 = new PVector(sx - ex, sy - ey);
-  PVector v2 = new PVector(ex - hx, ey - hy);
-
-  abeta = (int)(180 - degrees(PVector.angleBetween(v1, v2)));
-}
-
-//---------------------------------------------------------------------------------- utils
-//---------------------------------------------------------------------------------- utils
-//---------------------------------------------------------------------------------- utils
-
-float processing2costantinoTHETA(float t) {
-  return 180-(345-degrees(t) +45);
-}
 
 void keyPressed() {
   //println("keypressed "+key);
