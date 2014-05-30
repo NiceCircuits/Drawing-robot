@@ -44,11 +44,14 @@ public void addTPoints(ArrayList<tPoint> _tPoints)
   println("Saving to database...");
   sql.query("DROP TABLE IF EXISTS tPoints%d", number);
   sql.query("CREATE TABLE tPoints%d (id int NOT NULL AUTO_INCREMENT, x int NOT NULL, y int NOT NULL, dTime int NOT NULL, PRIMARY KEY (id))ENGINE=InnoDB", number);
+  String query= String.format("INSERT INTO tPoints%d (id, x, y, dTime) VALUES ", number);
   for (int i=0; i<_tPoints.size(); i++)
   {
     _tPoint = tPoints.get(i);
-    sql.query("INSERT INTO tPoints%d VALUES(%d, %d, %d, %d);", number, i+1, _tPoint.x, _tPoint.y, _tPoint.dTime);
+    query = query + String.format("(%d, %d, %d, %d),", i+1, _tPoint.x, _tPoint.y, _tPoint.dTime);
   }
+  query = query.substring(0, query.length()-1); // remove last ","
+  sql.query(query);
   sql.query("UPDATE summary SET listCount=%d;", number+1);
   println("Saved " + nf(_tPoints.size(),1) + " tPoints to database");
 }
