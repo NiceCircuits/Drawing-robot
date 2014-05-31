@@ -1,4 +1,6 @@
 BufferedReader reader;
+drawTPoints drawer;
+
 class tPoint
 {
 //================================Constructors================================
@@ -21,20 +23,17 @@ class tPoint
 }
 
 ArrayList<tPoint> tPoints;
-ArrayList<ArrayList<tPoint>> warehouse;
 int starttime,drawStartTime;
 
-int startdraw=0;
-int drawcount=0;
-int warehousecount=0;
 database db;
 
 //=======================================================================
 void setup()
 {
-  size(600, 600);
+  size(850, 600);
+  background(0);
+  stroke(255);
   tPoints = new ArrayList<tPoint>();
-  warehouse = new ArrayList<ArrayList<tPoint>>();
   String password;
   try
   {
@@ -53,41 +52,10 @@ void setup()
   {
     db = new database();
   }
-  background(0);
-  stroke(255);
 }
 
 void draw()
 {
-  if(startdraw>0)
-  {
-    startdraw=0;
-    background(0);
-    drawcount=1;
-    drawStartTime=millis();
-    tPoints=warehouse.get(warehousecount);
-  }
-  if(drawcount>0)
-  {
-    if(drawcount >= tPoints.size())
-    {
-       drawcount=0;
-       warehousecount++;
-       if (warehousecount<warehouse.size())
-       {
-         startdraw=1;
-       }
-    }
-    else
-    {
-      int i = drawcount;
-      if(tPoints.get(i).dTime <= millis() - drawStartTime)
-      {
-        line(tPoints.get(i-1).x,tPoints.get(i-1).y,tPoints.get(i).x,tPoints.get(i).y);
-        drawcount++;
-      }
-    }
-  }  
 }
 
 void mousePressed() {
@@ -95,8 +63,6 @@ void mousePressed() {
   tPoints=new ArrayList<tPoint>();
   starttime = millis();
   tPoints.add(new tPoint(mouseX,mouseY,0));
-  startdraw=0;
-  drawcount=0;
 }
 
 void mouseDragged() {
@@ -107,20 +73,14 @@ void mouseDragged() {
 }
 
 void mouseReleased() {
-  warehouse.add(new ArrayList<tPoint>(tPoints));
 }
-
-//boolean sketchFullScreen() {
-//  return false;
-//}
 
 void keyPressed()
 {
   if (key == ' ')
   {
-    startdraw=1;
-    warehousecount=0;
-    drawcount=0;
+   drawer = new drawTPoints(tPoints);
+   drawer.start();
   }
   if (key == 's') // save to database
   {
