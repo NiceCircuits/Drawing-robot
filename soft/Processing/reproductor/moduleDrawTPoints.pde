@@ -2,7 +2,7 @@ class drawTPoints extends Thread
 {
 //================================Fields================================
   private ArrayList<tPoint> _tPoints;
-  public boolean drawing;
+  public volatile boolean drawing;
 //================================Constructors================================
   drawTPoints(ArrayList<tPoint> tPoints)
   {
@@ -21,15 +21,24 @@ class drawTPoints extends Thread
   {
     for (int i = 1; i < _tPoints.size(); i++)
     {
-      line(tPoints.get(i-1).x,tPoints.get(i-1).y,tPoints.get(i).x,tPoints.get(i).y);
+      if (!drawing)
+      {
+        break;
+      }
+      line(_tPoints.get(i-1).x,_tPoints.get(i-1).y,_tPoints.get(i).x,_tPoints.get(i).y);
       try
       {
-        sleep(tPoints.get(i).dTime - tPoints.get(i-1).dTime);
+        sleep(_tPoints.get(i).dTime - _tPoints.get(i-1).dTime);
       }
       catch (Exception e)
       {
       }
     }
+    drawing = false;
+  }
+  
+  void kill()
+  {
     drawing = false;
   }
 }

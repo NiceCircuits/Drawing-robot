@@ -58,6 +58,23 @@ class database
     println("Saved " + nf(_tPoints.size(),1) + " tPoints to database");
   }
   
+  public ArrayList<tPoint> getTPoints(int number)
+  {
+    if (number >=  getCount())
+    {
+      return null; 
+    }
+    ArrayList<tPoint> ret = new ArrayList<tPoint>();
+    sql.query( "SELECT * FROM tPoints%d", number);
+    while (sql.next())
+    {
+      tPointWithId p = new tPointWithId();
+      sql.setFromRow(p);
+      ret.add((tPoint)p);
+     }
+     return ret;
+  }
+  
   public void clearDatabase()
   {
     int number = getCount();
