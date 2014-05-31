@@ -14,7 +14,7 @@ class database
       if ( sql.connect() )
       {
         println("Connected to database " + sqlDatabase);
-        println( "Database has " + getCount() + " saved drawings" );
+        println("Database has " + getCount() + " saved drawings");
       }
       else
       {

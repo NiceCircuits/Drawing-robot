@@ -1,5 +1,7 @@
 BufferedReader reader;
 drawTPoints drawer;
+inverseKinematics arm;
+communication comm;
 
 ArrayList<tPoint> tPoints;
 int starttime,drawStartTime;
@@ -13,6 +15,8 @@ void setup()
   background(0);
   stroke(255);
   tPoints = new ArrayList<tPoint>();
+  arm = new inverseKinematics(600, 600);
+  comm = new communication(this);
   String password;
   try
   {
@@ -58,7 +62,7 @@ void keyPressed()
 {
   if (key == ' ')
   {
-   drawer = new drawTPoints(tPoints);
+   drawer = new drawTPoints(tPoints, arm, comm);
    drawer.start();
   }
   if (key == 's') // save to database
@@ -79,7 +83,7 @@ void keyPressed()
     {
       drawer.kill();
     }
-    drawer = new drawTPoints(tPoints);
+    drawer = new drawTPoints(tPoints, arm, comm);
     drawer.start();
   }
 
