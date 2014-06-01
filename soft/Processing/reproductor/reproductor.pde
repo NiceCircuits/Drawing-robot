@@ -14,8 +14,7 @@ database db;
 void setup()
 {
   size(850, 600);
-  background(0);
-  stroke(255);
+  clearCanvas();
   tPoints = new ArrayList<tPoint>();
   robotArm = new arm(this, 400, 400, 425, 600);
   debugg = new debug(debugLevel);
@@ -44,7 +43,8 @@ void draw()
 }
 
 void mousePressed() {
-  background(0);
+  drawer.kill();
+  clearCanvas();
   tPoints=new ArrayList<tPoint>();
   starttime = millis();
   tPoints.add(new tPoint(mouseX,mouseY,0));
@@ -103,5 +103,18 @@ void keyPressed()
 
 }
 
+void clearCanvas()
+{
+  background(0);
+  stroke(255);
+  // print manual
+  fill(128,128,0);
+  text("Draw with mouse.\n"+
+    "Key functions:\n"+
+    "  space - redraw last curve\n"+
+    "  s - save curve to database\n"+
+    "  l - load random curve from database\n"+
+    "  c - clear whole database", 10,20);
+}
 
 

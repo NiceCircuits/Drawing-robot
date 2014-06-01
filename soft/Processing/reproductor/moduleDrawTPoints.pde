@@ -20,7 +20,7 @@ class drawTPoints extends Thread
   void start()
   {
     drawing = true;
-    background(0);
+    clearCanvas();
     super.start();
   }
   
