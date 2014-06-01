@@ -35,17 +35,14 @@ class communication
     sendCommand(command, 0, 0);
   } 
   
-  public void sendCommand(char command, float angle1, float angle2)
+  public void sendCommand(char command, float angle1Deg, float angle2Deg)
   {
-    int atheta = (int)(180-(345-degrees(angle1) +45));
-    int abeta = (int)(180 - angle2 + angle1);
-  
     try
     {
       port.write(HEADER); 
       port.write(command);
-      port.write(180 - atheta); 
-      port.write(180 - abeta);
+      port.write((int)angle1Deg); 
+      port.write((int)angle2Deg);
     }
     catch(Exception e) 
     {

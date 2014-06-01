@@ -15,7 +15,7 @@ void setup()
   background(0);
   stroke(255);
   tPoints = new ArrayList<tPoint>();
-  arm = new inverseKinematics(600, 600);
+  arm = new inverseKinematics(600, 600, 425, 600);
   comm = new communication(this);
   String password;
   try
@@ -53,6 +53,9 @@ void mouseDragged() {
   i = tPoints.size();
   tPoints.add(new tPoint(mouseX,mouseY,millis()-starttime));
   line(tPoints.get(i-1).x,tPoints.get(i-1).y,tPoints.get(i).x,tPoints.get(i).y);
+  arm.setPosition(mouseX,mouseY);
+//  line(arm.startX, arm.startY, arm.getArm1Position()[0], arm.getArm1Position()[1]); 
+//  line(arm.getArm1Position()[0], arm.getArm1Position()[1], arm.getArm2Position()[0], arm.getArm2Position()[1]);
 }
 
 void mouseReleased() {

@@ -43,7 +43,7 @@ class drawTPoints extends Thread
       if (comm != null)
       {
         arm.setPosition(tPoints.get(i).x, tPoints.get(i).y);
-        comm.sendCommand(comm.MOUSE, arm.getAngle1(), arm.getAngle2());
+        comm.sendCommand(comm.MOUSE, 360-arm.getAngle1Deg(), -180+arm.getAngle1Deg()-arm.getAngle2Deg());
       }
       line(tPoints.get(i-1).x,tPoints.get(i-1).y,tPoints.get(i).x,tPoints.get(i).y);
       try
