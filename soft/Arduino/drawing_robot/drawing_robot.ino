@@ -1,19 +1,17 @@
-//arduino CODE
-
-//----------------------------------------- parameter (CHANGE HERE)
+//----------------------------------------- parameter (CHANGE HERE)----------------------------------------- 
 #define UP_PARAMETER 0
 #define DOWN_PARAMETER 100
 
 #define SERVO_1    2
 #define SERVO_2    3
 #define SERVO_3    9
-#define LEDPIN     8
+#define LEDPIN     13
 
 #define LED_BLINK_INTERVAL 1000
 
-//----------------------------------------- communication protocol (DON'T CHANGE!)
+//----------------------------------------- communication protocol (DON'T CHANGE!)----------------------------------------- 
 #define HEADER      '|' 
-//command
+// commands
 #define MOUSE       'M' 
 #define MOUSEUP     'U'
 #define MOUSEDOWN   'D'
@@ -23,7 +21,6 @@
 
 //----------------------------------------- application
 #include <Servo.h> 
-#include <avr/pgmspace.h>
 
 boolean drawing = false;
 
