@@ -43,7 +43,7 @@ class communication
       port.write(command);
       port.write((int)angle1Deg); 
       port.write((int)angle2Deg);
-//      println(command, angle1Deg, angle2Deg);
+      debugg.write(3, String.format("send: %c, %d, %d", command, (int)angle1Deg, (int)angle2Deg));
     }
     catch(Exception e) 
     {
@@ -57,8 +57,7 @@ void serialEvent(Serial p)
   String inString = p.readStringUntil('\n');
   if (inString != null) 
   {
-//    print("ARDUINO ECHO ### ");
-//    println(inString);    // echo text string from arduino
+    debugg.write(1, "ARDUINO ECHO ### " + inString);
   }
 }
 

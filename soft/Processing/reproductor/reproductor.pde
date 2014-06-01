@@ -1,6 +1,9 @@
 BufferedReader reader;
 drawTPoints drawer;
 arm robotArm;
+debug debugg;
+// Debug level
+final int debugLevel = 0;
 
 ArrayList<tPoint> tPoints;
 int starttime,drawStartTime;
@@ -15,6 +18,7 @@ void setup()
   stroke(255);
   tPoints = new ArrayList<tPoint>();
   robotArm = new arm(this, 400, 400, 425, 600);
+  debugg = new debug(debugLevel);
   String password;
   try
   {
@@ -46,7 +50,10 @@ void mousePressed() {
   tPoints.add(new tPoint(mouseX,mouseY,0));
   robotArm.goTo(mouseX,mouseY); 
   robotArm.down();
-  robotArm.drawArm();
+  if (debugg.level > 1)
+  {
+    robotArm.drawArm();
+  }
 }
 
 void mouseDragged() {
@@ -55,7 +62,10 @@ void mouseDragged() {
   tPoints.add(new tPoint(mouseX,mouseY,millis()-starttime));
   line(tPoints.get(i-1).x,tPoints.get(i-1).y,tPoints.get(i).x,tPoints.get(i).y);
   robotArm.goTo(mouseX,mouseY);
-  robotArm.drawArm();
+  if (debugg.level > 1)
+  {
+    robotArm.drawArm();
+  }
 }
 
 void mouseReleased() {
