@@ -16,7 +16,7 @@ class communication
     try
     {
       port = new Serial(applet, _portName, 115200);
-      println(_portName);
+      println("Connected to", _portName);
     } 
     catch(Exception e)
     {
@@ -43,6 +43,7 @@ class communication
       port.write(command);
       port.write((int)angle1Deg); 
       port.write((int)angle2Deg);
+//      println(command, angle1Deg, angle2Deg);
     }
     catch(Exception e) 
     {
@@ -56,8 +57,8 @@ void serialEvent(Serial p)
   String inString = p.readStringUntil('\n');
   if (inString != null) 
   {
-    print("ARDUINO ECHO ### ");
-    println(inString);    // echo text string from arduino
+//    print("ARDUINO ECHO ### ");
+//    println(inString);    // echo text string from arduino
   }
 }
 

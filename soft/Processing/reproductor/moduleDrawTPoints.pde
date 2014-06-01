@@ -2,21 +2,19 @@ class drawTPoints extends Thread
 {
 //================================Fields================================
   private ArrayList<tPoint> tPoints;
-  private inverseKinematics arm;
-  private communication comm;
+  private arm robotArm;
   public volatile boolean drawing;
 //================================Constructors================================
-  drawTPoints(ArrayList<tPoint> _tPoints, inverseKinematics _arm, communication _comm)
+  drawTPoints(ArrayList<tPoint> _tPoints, arm _robotArm)
   {
     tPoints = _tPoints;
-    arm = _arm;
-    comm = _comm;
+    robotArm = _robotArm;
     drawing = false;
   }
   
   drawTPoints(ArrayList<tPoint> _tPoints)
   {
-    this(_tPoints, null, null);
+    this(_tPoints, null);
   }
 //================================Methods================================
   void start()
@@ -28,11 +26,10 @@ class drawTPoints extends Thread
   
   void run()
   {
-    if (comm != null)
+    if (robotArm != null)
     {
-      arm.setPosition(tPoints.get(0).x, tPoints.get(0).y);
-      comm.sendCommand(comm.MOUSE, arm.getAngle1(), arm.getAngle2());
-      comm.sendCommand(comm.MOUSEDOWN);
+      robotArm.goTo(tPoints.get(0).x, tPoints.get(0).y);
+      robotArm.down();
     }
     for (int i = 1; i < tPoints.size(); i++)
     {
@@ -40,10 +37,9 @@ class drawTPoints extends Thread
       {
         break;
       }
-      if (comm != null)
+      if (robotArm != null)
       {
-        arm.setPosition(tPoints.get(i).x, tPoints.get(i).y);
-        comm.sendCommand(comm.MOUSE, 360-arm.getAngle1Deg(), -180+arm.getAngle1Deg()-arm.getAngle2Deg());
+        robotArm.goTo(tPoints.get(i).x, tPoints.get(i).y);
       }
       line(tPoints.get(i-1).x,tPoints.get(i-1).y,tPoints.get(i).x,tPoints.get(i).y);
       try
@@ -54,9 +50,9 @@ class drawTPoints extends Thread
       {
       }
     }
-    if (comm != null)
+    if (robotArm != null)
     {
-      comm.sendCommand(comm.MOUSEUP);
+      robotArm.up();
     }
     drawing = false;
   }

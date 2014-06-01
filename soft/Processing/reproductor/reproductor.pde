@@ -1,7 +1,6 @@
 BufferedReader reader;
 drawTPoints drawer;
-inverseKinematics arm;
-communication comm;
+arm robotArm;
 
 ArrayList<tPoint> tPoints;
 int starttime,drawStartTime;
@@ -15,8 +14,7 @@ void setup()
   background(0);
   stroke(255);
   tPoints = new ArrayList<tPoint>();
-  arm = new inverseKinematics(600, 600, 425, 600);
-  comm = new communication(this);
+  robotArm = new arm(this, 400, 400, 425, 600);
   String password;
   try
   {
@@ -46,6 +44,9 @@ void mousePressed() {
   tPoints=new ArrayList<tPoint>();
   starttime = millis();
   tPoints.add(new tPoint(mouseX,mouseY,0));
+  robotArm.goTo(mouseX,mouseY); 
+  robotArm.down();
+  robotArm.drawArm();
 }
 
 void mouseDragged() {
@@ -53,19 +54,19 @@ void mouseDragged() {
   i = tPoints.size();
   tPoints.add(new tPoint(mouseX,mouseY,millis()-starttime));
   line(tPoints.get(i-1).x,tPoints.get(i-1).y,tPoints.get(i).x,tPoints.get(i).y);
-  arm.setPosition(mouseX,mouseY);
-//  line(arm.startX, arm.startY, arm.getArm1Position()[0], arm.getArm1Position()[1]); 
-//  line(arm.getArm1Position()[0], arm.getArm1Position()[1], arm.getArm2Position()[0], arm.getArm2Position()[1]);
+  robotArm.goTo(mouseX,mouseY);
+  robotArm.drawArm();
 }
 
 void mouseReleased() {
+  robotArm.up();
 }
 
 void keyPressed()
 {
   if (key == ' ')
   {
-   drawer = new drawTPoints(tPoints, arm, comm);
+   drawer = new drawTPoints(tPoints, robotArm);
    drawer.start();
   }
   if (key == 's') // save to database
@@ -86,7 +87,7 @@ void keyPressed()
     {
       drawer.kill();
     }
-    drawer = new drawTPoints(tPoints, arm, comm);
+    drawer = new drawTPoints(tPoints, robotArm);
     drawer.start();
   }
 
