@@ -13,6 +13,13 @@ class communication
 //================================Constructors================================
   public communication(PApplet applet, String _portName)
   {
+    if (_portName == "")
+    {
+      if (Serial.list().length()>0)
+      {
+        _portName = Serial.list()[0];
+      }
+    }
     try
     {
       port = new Serial(applet, _portName, 115200);
@@ -26,7 +33,7 @@ class communication
 
   public communication(PApplet applet)
   {
-    this(applet, Serial.list()[0]);
+    this(applet, "");
   } 
   
 //================================Methods================================

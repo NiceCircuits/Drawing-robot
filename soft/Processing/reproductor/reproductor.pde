@@ -43,7 +43,10 @@ void draw()
 }
 
 void mousePressed() {
-  drawer.kill();
+  if (drawer != null)
+  {
+    drawer.kill();
+  }
   clearCanvas();
   tPoints=new ArrayList<tPoint>();
   starttime = millis();
