@@ -15,7 +15,7 @@ class communication
   {
     if (_portName == "")
     {
-      if (Serial.list().length()>0)
+      if (Serial.list().length>0)
       {
         _portName = Serial.list()[0];
       }
