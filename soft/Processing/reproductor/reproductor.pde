@@ -13,10 +13,18 @@ database db;
 //=======================================================================
 void setup()
 {
-  size(800, 600);
+  if (debugLevel == 0)
+  {
+    size(920, 500);
+  }
+  else
+  {
+    // debug - 20px higher 
+    size(920, 520);
+  }
   clearCanvas();
   tPoints = new ArrayList<tPoint>();
-  robotArm = new arm(this, 300, 300, 400, 0);
+  robotArm = new arm(this, 400, 400, 440, -136);
   debugg = new debug(debugLevel);
   String password;
   try
@@ -107,6 +115,15 @@ void keyPressed()
   {
     robotArm.drawLimits();
   }
+  if (key == 'g' && debugg.level>0) //draw arm resolution grid
+  {
+    robotArm.drawResolutionGrid();
+  }
+}
+
+void mouseMoved()
+{
+  debugg.drawText(1, String.format("x=%4d y=%4d", mouseX, mouseY));
 }
 
 void clearCanvas()

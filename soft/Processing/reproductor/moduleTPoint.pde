@@ -17,6 +17,11 @@ class tPoint
   {
     return "(" + nf(x,1) + ";" + nf(y,1) + ";" + nf(dTime,1) + ")";
   }
+  public void translate(float scale, int moveX, int moveY)
+  {
+    x = (int)(x*scale)+moveX;
+    y = (int)(y*scale)+moveY;
+  }
 }
 
 class tPointWithId extends tPoint
