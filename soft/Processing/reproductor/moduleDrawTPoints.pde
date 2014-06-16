@@ -3,13 +3,20 @@ class drawTPoints extends Thread
 //================================Fields================================
   private ArrayList<tPoint> tPoints;
   private arm robotArm;
+  private boolean fast;
   public volatile boolean drawing;
 //================================Constructors================================
-  drawTPoints(ArrayList<tPoint> _tPoints, arm _robotArm)
+  drawTPoints(ArrayList<tPoint> _tPoints, arm _robotArm, boolean _fast)
   {
     tPoints = _tPoints;
     robotArm = _robotArm;
+    fast = _fast;
     drawing = false;
+  }
+
+  drawTPoints(ArrayList<tPoint> _tPoints, arm _robotArm)
+  {
+    this(_tPoints, _robotArm, false);
   }
   
   drawTPoints(ArrayList<tPoint> _tPoints)
@@ -42,12 +49,15 @@ class drawTPoints extends Thread
         robotArm.goTo(tPoints.get(i).x, tPoints.get(i).y);
       }
       line(tPoints.get(i-1).x,tPoints.get(i-1).y,tPoints.get(i).x,tPoints.get(i).y);
-      try
+      if (!fast)
       {
-        sleep(tPoints.get(i).dTime - tPoints.get(i-1).dTime);
-      }
-      catch (Exception e)
-      {
+        try
+        {
+          sleep(tPoints.get(i).dTime - tPoints.get(i-1).dTime);
+        }
+        catch (Exception e)
+        {
+        }
       }
     }
     if (robotArm != null)

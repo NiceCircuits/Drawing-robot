@@ -3,7 +3,7 @@ drawTPoints drawer;
 arm robotArm;
 debug debugg;
 // Debug level
-final int debugLevel = 0;
+final int debugLevel = 1;
 
 ArrayList<tPoint> tPoints;
 int starttime,drawStartTime;
@@ -16,7 +16,7 @@ void setup()
   size(850, 600);
   clearCanvas();
   tPoints = new ArrayList<tPoint>();
-  robotArm = new arm(this, 400, 400, 425, 600);
+  robotArm = new arm(this, 200, 200, 425, 300);
   debugg = new debug(debugLevel);
   String password;
   try
@@ -53,7 +53,7 @@ void mousePressed() {
   tPoints.add(new tPoint(mouseX,mouseY,0));
   robotArm.goTo(mouseX,mouseY); 
   robotArm.down();
-  if (debugg.level > 1)
+  if (debugg.level > 0)
   {
     robotArm.drawArm();
   }
@@ -65,7 +65,7 @@ void mouseDragged() {
   tPoints.add(new tPoint(mouseX,mouseY,millis()-starttime));
   line(tPoints.get(i-1).x,tPoints.get(i-1).y,tPoints.get(i).x,tPoints.get(i).y);
   robotArm.goTo(mouseX,mouseY);
-  if (debugg.level > 1)
+  if (debugg.level > 0)
   {
     robotArm.drawArm();
   }

@@ -1,20 +1,25 @@
 class inverseKinematics
 {
-  //====================fields====================
-  private float angle1, angle2; // angles of arms
-  private float length1, length2; // length of arms
-  public int startX, startY; // position of arm base
-  //====================constructor====================
+//====================fields====================
+  public float angle1, angle2; // angles of arms
+  public float length1, length2; // length of arms
+  public float startX, startY; // position of arm base
+  public float min1, max1, min2, max2; // limits
+//=============constructor====================
   // set lengths of arms
-  public inverseKinematics(float armLength1, float armLength2, int _startX, int _startY)
+  public inverseKinematics(float armLength1, float armLength2, float _startX, float _startY, float _min1, float _max1, float _min2, float _max2)
   {
     length1 = armLength1;
     length2 = armLength2;
     startX = _startX;
     startY = _startY;
+    min1 = _min1;
+    max1 = _max1;
+    min2 = _min2;
+    max2 = _max2;
   }
   
-  //====================methods====================
+//====================methods====================
   public void setPosition(float x, float y)
   {
     x = x - startX;
@@ -25,45 +30,41 @@ class inverseKinematics
     B = acos((length2*length2-length1*length1-c*c)/(-2*length1*c));
     C = acos((c*c-length1*length1-length2*length2)/(-2*length1*length2));
     D = atan2(y, x);
-    angle1 = D + B + PI + C;
-    angle2 = D+B;
+    angle1 = rad2Deg(D + B + PI + C) % 360.0;
+    if (angle1<0)
+    {
+      angle1= angle1+360.0;
+    }
+    angle1 = constrain(angle1, min1, max1);
+    angle2 = (rad2Deg(D+B)-angle1) % 360.0;
+    if (angle2<0)
+    {
+      angle2= angle2+360.0;
+    }
+    angle2 = constrain(angle2, min2, max2);
+    debugg.write(1, String.format("x=%3.0f y=%3.0f a1=%3.0f a2=%3.0f", x, y, angle1, angle2));
   }
-  
-  public float getAngle1()
-  {
-    return angle1;
-  }
-  
-  public float getAngle2()
-  {
-    return angle2;
-  }
-  
-  public float getAngle1Deg()
-  {
-    return rad2Deg(angle1);
-  }
-  
-  public float getAngle2Deg()
-  {
-    return rad2Deg(angle2);
-  }
-  
+    
   public float[] getArm1Position()
   {
-    float[] pos = {cos(angle1)*length1+startX, sin(angle1)*length1+startY};
+    float[] pos = {cos(deg2Rad(angle1))*length1+startX, sin(deg2Rad(angle1))*length1+startY};
     return pos;
   }
   
   public float[] getArm2Position()
   {
     float[] pos1 = getArm1Position();
-    float[] pos2 = {pos1[0] + cos(angle2)*length2, pos1[1] + sin(angle2)*length2};
+    float[] pos2 = {pos1[0] + cos(deg2Rad(angle2+angle1))*length2, pos1[1] + sin(deg2Rad(angle2+angle1))*length2};
     return pos2;
   }
   public float rad2Deg(float angle)
   {
     return (angle*180/PI);
+  }
+  
+  public float deg2Rad(float angle)
+  {
+    return (angle*PI/180);
   }
   
 }

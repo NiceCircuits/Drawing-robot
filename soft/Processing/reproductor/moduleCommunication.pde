@@ -64,7 +64,7 @@ void serialEvent(Serial p)
   String inString = p.readStringUntil('\n');
   if (inString != null) 
   {
-    debugg.write(1, "ARDUINO ECHO ### " + inString);
+    debugg.write(2, "ARDUINO ECHO ### " + inString);
   }
 }
 
