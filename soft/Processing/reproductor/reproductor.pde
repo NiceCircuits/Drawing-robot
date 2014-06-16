@@ -13,10 +13,10 @@ database db;
 //=======================================================================
 void setup()
 {
-  size(850, 600);
+  size(800, 600);
   clearCanvas();
   tPoints = new ArrayList<tPoint>();
-  robotArm = new arm(this, 200, 200, 425, 300);
+  robotArm = new arm(this, 300, 300, 400, 0);
   debugg = new debug(debugLevel);
   String password;
   try
@@ -103,7 +103,10 @@ void keyPressed()
     drawer = new drawTPoints(tPoints, robotArm);
     drawer.start();
   }
-
+  if (key == 'd' && debugg.level>0) //draw arm limits
+  {
+    robotArm.drawLimits();
+  }
 }
 
 void clearCanvas()

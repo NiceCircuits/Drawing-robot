@@ -31,16 +31,16 @@ class inverseKinematics
     C = acos((c*c-length1*length1-length2*length2)/(-2*length1*length2));
     D = atan2(y, x);
     angle1 = rad2Deg(D + B + PI + C) % 360.0;
-    if (angle1<0)
-    {
-      angle1= angle1+360.0;
-    }
+    if (angle1<min1)
+      {angle1= angle1+360.0;}
+    if (angle1>max1)
+      {angle1=angle1-360.0;}
     angle1 = constrain(angle1, min1, max1);
     angle2 = (rad2Deg(D+B)-angle1) % 360.0;
-    if (angle2<0)
-    {
-      angle2= angle2+360.0;
-    }
+    if (angle2<min2)
+    {angle2= angle2+360.0;}
+    if (angle2>max2)
+    {angle2= angle2-360.0;}
     angle2 = constrain(angle2, min2, max2);
     debugg.write(1, String.format("x=%3.0f y=%3.0f a1=%3.0f a2=%3.0f", x, y, angle1, angle2));
   }

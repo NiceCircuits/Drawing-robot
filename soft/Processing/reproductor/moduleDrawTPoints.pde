@@ -24,11 +24,33 @@ class drawTPoints extends Thread
     this(_tPoints, null);
   }
 //================================Methods================================
-  void start()
+  void start(int r, int g, int b)
   {
     drawing = true;
     clearCanvas();
+    stroke(r,g,b);
     super.start();
+  }
+  void start()
+  {
+    start(255,255,255);
+  } 
+  void drawAlso(ArrayList<tPoint> _tPoints, int r, int g, int b)
+  {
+    while(drawing)
+    {
+      try
+      {
+        sleep(100);
+      }
+      catch (Exception e)
+      {
+      }
+    }
+    tPoints = _tPoints;
+    drawing = true;
+    stroke(r,g,b);
+    run();
   }
   
   void run()
