@@ -1,9 +1,10 @@
 BufferedReader reader;
 drawTPoints drawer;
+autoDraw autoDrawer;
 arm robotArm;
 debug debugg;
 // Debug level
-final int debugLevel = 1;
+final int debugLevel = 0;
 
 ArrayList<tPoint> tPoints;
 int starttime,drawStartTime;
@@ -179,6 +180,8 @@ void changeMode(int _mode)
   }
   else if (_mode == 2)
   {
+    autoDrawer = new autoDraw(robotArm, db);
+    autoDrawer.start();
     mode = 2;
   }
   else
