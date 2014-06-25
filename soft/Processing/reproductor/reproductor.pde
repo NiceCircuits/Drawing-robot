@@ -7,8 +7,11 @@ final int debugLevel = 1;
 
 ArrayList<tPoint> tPoints;
 int starttime,drawStartTime;
-String infoText = ""; 
+volatile String infoText = ""; 
 int mode = -1;
+int group = 0, curveNumber=0;
+final int curveNumberMin = 16;
+String groupNames[] = {"", "lines", "circles", "triangles", "rectangles"};
 
 database db;
 
@@ -83,6 +86,11 @@ void mouseDragged() {
 
 void mouseReleased() {
   robotArm.up();
+  if (mode == 1)
+  {
+    curveNumber++;
+    changeMode(1);
+  }
 }
 
 void keyPressed()
@@ -92,35 +100,55 @@ void keyPressed()
    drawer = new drawTPoints(tPoints, robotArm);
    drawer.start();
   }
-  if (key == 's') // save to database
+  if (mode == 0)
   {
-    if (tPoints.size()>0)
+    if (key == 'u')
     {
-      db.addTPoints(tPoints);
+      changeMode(11);
+    }
+    if (key == 'r')
+    {
+      changeMode(2);
     }
   }
-  if (key == 'c') //clear database
+  if (mode == 11)
   {
-    db.clearDatabase();
-  }
-  if (key == 'l') //load curves from database and draw them
-  {
-    tPoints = db.getTPoints((int)random(db.getCount()));
-    if (drawer != null)
+    if (key >= '1' && key <= '4')
     {
-      drawer.kill();
+      group = key - '0';
+      changeMode(1);
     }
-    drawer = new drawTPoints(tPoints, robotArm);
-    drawer.start();
   }
-  if (key == 'd' && debugg.level>0) //draw arm limits
-  {
-    robotArm.drawLimits();
-  }
-  if (key == 'g' && debugg.level>0) //draw arm resolution grid
-  {
-    robotArm.drawResolutionGrid();
-  }
+// old functions
+//  if (key == 's') // save to database
+//  {
+//    if (tPoints.size()>0)
+//    {
+//      db.addTPoints(tPoints);
+//    }
+//  }
+//  if (key == 'c') //clear database
+//  {
+//    db.clearDatabase();
+//  }
+//  if (key == 'l') //load curves from database and draw them
+//  {
+//    tPoints = db.getTPoints((int)random(db.getCount()));
+//    if (drawer != null)
+//    {
+//      drawer.kill();
+//    }
+//    drawer = new drawTPoints(tPoints, robotArm);
+//    drawer.start();
+//  }
+//  if (key == 'd' && debugg.level>0) //draw arm limits
+//  {
+//    robotArm.drawLimits();
+//  }
+//  if (key == 'g' && debugg.level>0) //draw arm resolution grid
+//  {
+//    robotArm.drawResolutionGrid();
+//  }
 }
 
 void mouseMoved()
@@ -130,22 +158,35 @@ void mouseMoved()
 
 void changeMode(int _mode)
 {
-  if (_mode == 1)
+  if (_mode == 11)
   {
-    
+    infoText = "Phase 1 start.\n"+
+      "Press:\n"+
+      "  space - redraw last curve\n"+
+      "  1 - start drawing lines\n"+
+      "  2 - start drawing circles\n"+
+      "  3 - start drawing triangles\n"+
+      "  4 - start drawing rectangles\n";
+     mode = 11;
+  }
+  else if (_mode == 1)
+  {
+    infoText = String.format("Draw %s.\n"+
+      "  %d/%d ready\n", groupNames[group], curveNumber, curveNumberMin);
+     mode = 1;
   }
   else if (_mode == 2)
   {
-    
+    mode = 2;
   }
   else
   {
     infoText = "Draw with mouse.\n"+
-      "Key functions:\n"+
+      "Press:\n"+
       "  space - redraw last curve\n"+
-      "  s - save curve to database\n"+
-      "  l - load random curve from database\n"+
-      "  c - clear whole database";
+      "  u - start phase 1 - user\n"+
+      "  r - start phase 2 - robot";
+     mode = 0;
   }
   clearCanvas();
 }
@@ -157,12 +198,6 @@ void clearCanvas()
   // print manual
   fill(128,128,0);
   text(infoText, 10, 20);
-//  text("Draw with mouse.\n"+
-//    "Key functions:\n"+
-//    "  space - redraw last curve\n"+
-//    "  s - save curve to database\n"+
-//    "  l - load random curve from database\n"+
-//    "  c - clear whole database", 10,20);
 }
 
 
