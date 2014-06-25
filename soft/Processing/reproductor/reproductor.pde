@@ -89,6 +89,7 @@ void mouseReleased() {
   if (mode == 1)
   {
     curveNumber++;
+    db.addTPoints(tPoints, group);
     changeMode(1);
   }
 }
@@ -171,6 +172,7 @@ void changeMode(int _mode)
   }
   else if (_mode == 1)
   {
+    curveNumber = db.getCount(group);
     infoText = String.format("Draw %s.\n"+
       "  %d/%d ready\n", groupNames[group], curveNumber, curveNumberMin);
      mode = 1;
