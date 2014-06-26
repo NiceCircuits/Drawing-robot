@@ -13,8 +13,8 @@ class arm
   public void goTo(int x, int y) 
   {
     kinem.setPosition(x,y);
-    float angle1 = constrain(360-kinem.angle1, 0, 180);
-    float angle2 = constrain(-180+kinem.angle1-kinem.angle2, 0, 180);
+    float angle1 = constrain(kinem.angle1, 0, 180);
+    float angle2 = constrain(kinem.angle2, 0, 180);
     comm.sendCommand(comm.MOUSE, angle1, angle2);
   }
   public void up()

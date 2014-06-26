@@ -11,7 +11,7 @@ int starttime,drawStartTime;
 volatile String infoText = ""; 
 int mode = -1;
 int group = 0, curveNumber=0;
-final int curveNumberMin = 16;
+final int curveNumberMin = 4;
 String groupNames[] = {"", "lines", "circles", "triangles", "rectangles"};
 
 database db;
