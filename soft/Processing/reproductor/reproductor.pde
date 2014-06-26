@@ -121,6 +121,13 @@ void keyPressed()
       changeMode(1);
     }
   }
+  if (mode == 1)
+  {
+    if (key == '\n' && curveNumber >= curveNumberMin)
+    {
+      changeMode(0);
+    }
+  }
 // old functions
 //  if (key == 's') // save to database
 //  {
@@ -176,7 +183,11 @@ void changeMode(int _mode)
     curveNumber = db.getCount(group);
     infoText = String.format("Draw %s.\n"+
       "  %d/%d ready\n", groupNames[group], curveNumber, curveNumberMin);
-     mode = 1;
+    if (curveNumber >= curveNumberMin)
+    {
+      infoText += "Press Enter to return to main menu.\n";
+    }
+    mode = 1;
   }
   else if (_mode == 2)
   {

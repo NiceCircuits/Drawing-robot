@@ -21,9 +21,9 @@ class autoDraw extends Thread
     for (int group = 1; group<=4; group++)
     {
       int len = db.getCount(group);
-      for (int i=0; i< len; i++)
+      for (int i=0; i<4 && i<len; i++)
       {
-        tPoints = db.getTPoints(i, group);
+        tPoints = db.getTPoints((int)random(len), group);
         drawer = new drawTPoints(tPoints, robotArm);
         drawer.start();
         do

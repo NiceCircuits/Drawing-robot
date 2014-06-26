@@ -14,6 +14,7 @@ class database
       if ( sql.connect() )
       {
         println("Connected to database " + sqlDatabase);
+        println(String.format("Database has %d, %d, %d, %d drawings.", getCount(1), getCount(2), getCount(3), getCount(4)));
       }
       else
       {
