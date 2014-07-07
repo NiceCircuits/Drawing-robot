@@ -6,7 +6,7 @@ debug debugg;
 // Debug level
 final int debugLevel = 0;
 final boolean fastAutoDraw = false;
-final boolean clearEnable = false;
+final boolean clearEnable = true;
 
 // TODO: fix dirty hack: invert1
 boolean invert1=true;

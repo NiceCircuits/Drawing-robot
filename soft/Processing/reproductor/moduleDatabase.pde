@@ -93,6 +93,13 @@ class database
      sql.query("UPDATE summary SET listCount%d=0;", group);
      println("Database cleared");
   }
+  public void clearDatabase()
+  {
+    for(int i=1; i<=4; i++)
+    {
+      clearDatabase(i);
+    }
+  }
 }
 
 
