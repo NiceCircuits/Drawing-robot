@@ -13,7 +13,13 @@ class arm
   public void goTo(int x, int y) 
   {
     kinem.setPosition(x,y);
-    float angle1 = constrain(kinem.angle1, 0, 180);
+    // TODO: fix dirty hack (+60)
+    float angle1 = kinem.angle1 +60;
+    angle1 = constrain(angle1, 0, 180);
+    if (invert1)
+    {
+      angle1 = 180 - angle1;
+    }
     float angle2 = constrain(kinem.angle2, 0, 180);
     comm.sendCommand(comm.MOUSE, angle1, angle2);
   }
