@@ -5,6 +5,7 @@ arm robotArm;
 debug debugg;
 // Debug level
 final int debugLevel = 0;
+final boolean fastAutoDraw = false;
 
 // TODO: fix dirty hack: invert1
 boolean invert1=true;

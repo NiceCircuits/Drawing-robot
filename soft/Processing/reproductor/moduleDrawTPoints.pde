@@ -5,6 +5,7 @@ class drawTPoints extends Thread
   private arm robotArm;
   private boolean fast;
   public volatile boolean drawing;
+  public boolean clearBeforeDraw=true;
 //================================Constructors================================
   drawTPoints(ArrayList<tPoint> _tPoints, arm _robotArm, boolean _fast)
   {
@@ -27,7 +28,10 @@ class drawTPoints extends Thread
   void start(int r, int g, int b)
   {
     drawing = true;
-    clearCanvas();
+    if (clearBeforeDraw)
+    {
+      clearCanvas();
+    }
     stroke(r,g,b);
     super.start();
   }

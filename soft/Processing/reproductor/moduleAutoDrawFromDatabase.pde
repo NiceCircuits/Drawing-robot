@@ -49,7 +49,11 @@ class autoDraw extends Thread
         {
           tPoints.get(t).translate(0.5, moveX, moveY);
         }
-        drawer = new drawTPoints(tPoints, robotArm);
+        drawer = new drawTPoints(tPoints, robotArm, fastAutoDraw);
+        if (i!=0 || group!=1)
+        {
+          drawer.clearBeforeDraw=false;
+        }
         drawer.start();
         do
         {
@@ -63,7 +67,14 @@ class autoDraw extends Thread
         } while (drawer.drawing);
           try
           {
-            sleep(3000);
+            if(fastAutoDraw) 
+            {
+              sleep(300);
+            }
+            else
+            {
+              sleep(3000);
+            }
           }
           catch (Exception e)
           {
