@@ -6,6 +6,7 @@ debug debugg;
 // Debug level
 final int debugLevel = 0;
 final boolean fastAutoDraw = false;
+final boolean clearEnable = false;
 
 // TODO: fix dirty hack: invert1
 boolean invert1=true;
@@ -107,6 +108,10 @@ void keyPressed()
    drawer = new drawTPoints(tPoints, robotArm);
    drawer.start();
   }
+  if (key == 'c' && clearEnable) //clear database
+  {
+    db.clearDatabase();
+  }
   if (mode == 0)
   {
     if (key == 'u')
@@ -141,9 +146,6 @@ void keyPressed()
 //      db.addTPoints(tPoints);
 //    }
 //  }
-//  if (key == 'c') //clear database
-//  {
-//    db.clearDatabase();
 //  }
 //  if (key == 'l') //load curves from database and draw them
 //  {
