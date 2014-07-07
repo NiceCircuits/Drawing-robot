@@ -36,6 +36,13 @@ class autoDraw extends Thread
           {
           }
         } while (drawer.drawing);
+          try
+          {
+            sleep(3000);
+          }
+          catch (Exception e)
+          {
+          }
       }
     }
   }
