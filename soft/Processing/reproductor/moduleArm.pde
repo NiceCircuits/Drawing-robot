@@ -21,6 +21,10 @@ class arm
       angle1 = 180 - angle1;
     }
     float angle2 = constrain(kinem.angle2, 0, 180);
+    if (invert2)
+    {
+      angle2 = 180 - angle2;
+    }
     comm.sendCommand(comm.MOUSE, angle1, angle2);
   }
   public void up()

@@ -4,10 +4,11 @@ autoDraw autoDrawer;
 arm robotArm;
 debug debugg;
 // Debug level
-final int debugLevel = 2;
+final int debugLevel = 0;
 
 // TODO: fix dirty hack: invert1
 boolean invert1=true;
+boolean invert2=false;
 
 ArrayList<tPoint> tPoints;
 int starttime,drawStartTime;
