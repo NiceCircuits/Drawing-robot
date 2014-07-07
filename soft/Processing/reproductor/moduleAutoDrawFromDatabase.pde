@@ -21,9 +21,34 @@ class autoDraw extends Thread
     for (int group = 1; group<=4; group++)
     {
       int len = db.getCount(group);
+      int moveX, moveY;
+      switch (group)
+      {
+        case 1:
+          moveX=0;
+          moveY=0;
+          break;
+        case 2:
+          moveX=width/2;
+          moveY=0;
+          break;
+        case 3:
+          moveX=0;
+          moveY=height/2;
+          break;
+        case 4:
+        default:
+          moveX=width/2;
+          moveY=height/2;
+          break;
+      }
       for (int i=0; i<4 && i<len; i++)
       {
         tPoints = db.getTPoints((int)random(len), group);
+        for (int t=0; t<tPoints.size(); t++)
+        {
+          tPoints.get(t).translate(0.5, moveX, moveY);
+        }
         drawer = new drawTPoints(tPoints, robotArm);
         drawer.start();
         do
@@ -38,7 +63,7 @@ class autoDraw extends Thread
         } while (drawer.drawing);
           try
           {
-            sleep(3000);
+            sleep(30);
           }
           catch (Exception e)
           {
